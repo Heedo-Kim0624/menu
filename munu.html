@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>메뉴판</title>
+    <style>
+        .menu-item {
+            display: inline-block;
+            background-color: orange;
+            color: white;
+            padding: 10px 20px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .menu-item:hover {
+            background-color: darkorange;
+        }
+        .total {
+            font-weight: bold;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <h1>메뉴판</h1>
+    <ul id="menu-list">
+        <!-- 메뉴 항목은 JavaScript에서 추가 -->
+    </ul>
+    <p class="total">총 금액: <span id="total-price">0</span> 원</p>
+ 
+    <button id="reset-button">리셋</button>
+
+    <script>
+        // 메뉴 데이터
+        const menu = [
+            {'name': '칠리나쵸플래터', 'price': 8900, 'count': 0},
+            {'name': '순살 닭다리 양념구이', 'price': 9900, 'count': 0},
+            {'name': '소세지 구이', 'price': 5900, 'count': 0},
+            {'name': '먹태 구이', 'price': 5900, 'count': 0},
+            {'name': '황도', 'price': 3900, 'count': 0},
+            {'name': '콘치즈', 'price': 2900, 'count': 0},
+            {'name': '[한정수량!!] 요구르트 원액', 'price': 4000, 'count': 0},
+            {'name': '(반값)칠리나쵸플래터', 'price': 4450, 'count': 0},
+            {'name': '(반값)순살 닭다리 양념구이', 'price': 4950, 'count': 0},
+            {'name': '(반값)소세지 구이', 'price': 2950, 'count': 0},
+            {'name': '(반값)먹태 구이', 'price': 2950, 'count': 0}
+        ];
+
+        let totalPrice = 0;
+
+        // 메뉴 목록을 동적으로 생성
+        const menuList = document.getElementById('menu-list');
+        menu.forEach((item, index) => {
+            const li = document.createElement('li');
+            li.innerHTML = `<button class="menu-item">${item.name} - ${item.price} 원 (수량: ${item.count})</button>`;
+            li.addEventListener('click', () => {
+                item.count += 1;
+                totalPrice += item.price;
+                updateMenu();
+            });
+            menuList.appendChild(li);
+        });
+
+        // 메뉴 화면 업데이트 함수
+        function updateMenu() {
+            menuList.innerHTML = '';
+            menu.forEach((item, index) => {
+                const li = document.createElement('li');
+                li.innerHTML = `<button class="menu-item">${item.name} - ${item.price} 원 (수량: ${item.count})</button>`;
+                li.addEventListener('click', () => {
+                    item.count += 1;
+                    totalPrice += item.price;
+                    updateMenu();
+                });
+                menuList.appendChild(li);
+            });
+            document.getElementById('total-price').textContent = totalPrice;
+        }
+
+        // 초기화 버튼
+        document.getElementById('reset-button').addEventListener('click', () => {
+            menu.forEach(item => {
+                item.count = 0;
+            });
+            totalPrice = 0;
+            updateMenu();
+        });
+    </script>
+</body>
+</html>
